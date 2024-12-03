@@ -1,7 +1,7 @@
 # Proyecto: Carrito de Compras para Entradas de Conciertos 🎟️
 
 Este proyecto es una tienda en línea desarrollada con Django que permite a los usuarios comprar entradas para conciertos. 
-
+Alumnos: Andres Berillo y Juan Manuel Lukaszewicz
 ### Características principales:
 - Explorar conciertos disponibles con detalles como fecha, ubicación y descripción.
 - Comprar entradas para conciertos y descargar PDF de la compra.
