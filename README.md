@@ -48,41 +48,41 @@ python manage.py runserver
 ```mermaid
 classDiagram
     class Concierto {
-        +Entero id
-        +Cadena nombre
-        +FechaHora fecha
-        +Cadena ubicacion
-        +Cadena descripcion
-        +CampoImagen imagen
-        +Cadena __str__()
+        +int id
+        +String nombre
+        +DateTime fecha
+        +String ubicacion
+        +String descripcion
+        +ImageField  imagen
+        +String __str__()
     }
 
     class Entrada {
-        +Entero id
+        +int id
         +Concierto concierto
-        +Cadena numero_asiento
+        +String numero_asiento
         +Usuario propietario
         +Decimal precio
-        +Booleano esta_vendida
-        +CampoArchivo archivo_pdf
-        +Cadena __str__()
+        +Boolean esta_vendida
+        +FileField archivo_pdf
+        +String __str__()
         +guardar(*args, **kwargs)
     }
 
     class CarritoDeCompras {
-        +Entero id
+        +Int id
         +Usuario usuario
         +MuchosAMuchos entradas
-        +Cadena __str__()
+        +String __str__()
     }
 
     class Transaccion {
-        +Entero id
+        +int id
         +Entrada entrada
         +Usuario comprador
-        +FechaHora fecha
+        +DateTime fecha
         +Decimal monto
-        +Cadena __str__()
+        +String __str__()
     }
 
     class Usuario {
@@ -95,3 +95,42 @@ classDiagram
     CarritoDeCompras "1" --> "*" Entrada : entradas
     Transaccion "1" --> "1" Entrada : entrada
     Transaccion "1" --> "1" Usuario : comprador
+```
+
+### Diagrama de Secuencia
+
+```mermaid
+sequenceDiagram
+    participant Usuario
+    participant Navegador
+    participant ServidorDjango
+    participant BaseDeDatos
+
+    Usuario->>Navegador: Accede al sitio web
+    Navegador->>ServidorDjango: Solicita la lista de conciertos (/concerts/)
+    ServidorDjango->>BaseDeDatos: Obtiene los datos de los conciertos
+    BaseDeDatos-->>ServidorDjango: Retorna los conciertos
+    ServidorDjango-->>Navegador: Devuelve la lista de conciertos
+    Navegador-->>Usuario: Muestra los conciertos disponibles
+
+    Usuario->>Navegador: Selecciona un concierto y visualiza detalles
+    Navegador->>ServidorDjango: Solicita detalles del concierto (/concert/<id>/)
+    ServidorDjango->>BaseDeDatos: Obtiene los datos del concierto
+    BaseDeDatos-->>ServidorDjango: Retorna los detalles del concierto
+    ServidorDjango-->>Navegador: Devuelve los detalles del concierto
+    Navegador-->>Usuario: Muestra los detalles del concierto
+
+    Usuario->>Navegador: Agrega una entrada al carrito
+    Navegador->>ServidorDjango: Solicita agregar la entrada al carrito (/cart/add/<id>/)
+    ServidorDjango->>BaseDeDatos: Agrega la entrada al carrito del usuario
+    BaseDeDatos-->>ServidorDjango: Confirma la operación
+    ServidorDjango-->>Navegador: Actualiza el estado del carrito
+    Navegador-->>Usuario: Muestra que la entrada fue añadida al carrito
+
+    Usuario->>Navegador: Procede a la compra
+    Navegador->>ServidorDjango: Solicita procesar el pago (/checkout/)
+    ServidorDjango->>BaseDeDatos: Registra la transacción
+    BaseDeDatos-->>ServidorDjango: Confirma la transacción
+    ServidorDjango-->>Navegador: Confirma la compra
+    Navegador-->>Usuario: Muestra confirmación de la compra
+
