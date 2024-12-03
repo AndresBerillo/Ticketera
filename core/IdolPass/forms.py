@@ -47,6 +47,10 @@ class ConcertForm(forms.ModelForm):
             })
         }
 
+    def __init__(self, *args, **kwargs):
+        super(ConcertForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = True  # Campo obligatorio
+
 
 from django import forms
 from django.contrib.auth.models import User
@@ -151,3 +155,6 @@ class TicketForm(forms.ModelForm):
                 'type': 'file',
             }),
         }
+    def __init__(self, *args, **kwargs):
+        super(TicketForm, self).__init__(*args, **kwargs)
+        self.fields['pdf_file'].required = True  # Campo obligatorio

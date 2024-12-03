@@ -60,7 +60,7 @@ def register_view(request):
 def concert_detail(request, concert_id):
     concert = get_object_or_404(Concert, id=concert_id)
     tickets = concert.tickets.all()
-
+    form = AuthenticationForm()
     # Si el usuario está autenticado, obtener su carrito de compras
     if request.user.is_authenticated:
         cart, created = ShoppingCart.objects.get_or_create(user=request.user)
@@ -76,7 +76,7 @@ def concert_detail(request, concert_id):
             cart.tickets.add(ticket)  # Añadir el ticket al carrito
             return redirect('concert_detail', concert_id=concert_id)  # Redirigir a la misma página para ver cambios
 
-    return render(request, 'pages/concert_detail.html', {'concert': concert, 'tickets': tickets, 'cart': cart})
+    return render(request, 'pages/concert_detail.html', {'concert': concert, 'tickets': tickets, 'cart': cart, 'form': form})
 
 #Logica vista carrito
 def shopping_cart(request):
