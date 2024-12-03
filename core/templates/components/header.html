@@ -1,0 +1,58 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary shadow-sm">
+        <div class="container-fluid">
+            <!-- Marca del sitio -->
+            <a class="navbar-brand fw-bold text-primary" href="{% url 'home' %}">IdolPass</a>
+
+            <!-- Botones de acciones -->
+            <div class="d-flex align-items-center">
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <!-- Botón Dashboard -->
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary me-2">
+                            <i class="bi bi-gear-fill"></i> Dashboard
+                        </a>
+                    {% endif %}
+                    <!-- Botón Carrito -->
+                    <a href="{% url 'shopping_cart' %}" class="btn btn-outline-success me-2">
+                        <i class="bi bi-cart-fill"></i> Carrito
+                    </a>
+                    <!-- Botón Cerrar Sesión -->
+                    <form action="{% url 'logout' %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                        </button>
+                    </form>
+                {% else %}
+                    <!-- Botón Iniciar Sesión -->
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="bi bi-person-circle"></i> Iniciar Sesión
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal de Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario de login -->
+                    <form action="{% url 'login' %}" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+                    </form>
+                    <p class="text-center mt-3">¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+

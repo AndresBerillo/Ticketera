@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Tu Carrito - IdolPass{% endblock %}
+
+{% block content %}
+    <section class="cart container py-5">
+        <h1 class="mb-4 text-center text-primary">Carrito de Compras</h1>
+
+        {% if tickets %}
+            <!-- Tabla de Tickets -->
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Precio</th>
+                            <th>Concierto</th>
+                            <th>Asiento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in tickets %}
+                        <tr>
+                            <td>${{ ticket.price }}</td>
+                            <td>{{ ticket.concert.name }}</td>
+                            <td>{{ ticket.seat_number }}</td>
+                            <td>
+                                <!-- Botón para eliminar del carrito -->
+                                <form action="{% url 'remove_from_cart' ticket.id %}" method="POST" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Botón para proceder al pago -->
+            <div class="text-center mt-4">
+                <form action="{% url 'checkout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="bi bi-credit-card"></i> Proceder al Pago
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <!-- Mensaje cuando no hay tickets -->
+            <div class="alert alert-warning text-center" role="alert">
+                <i class="bi bi-exclamation-circle"></i> No hay entradas en tu carrito.
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

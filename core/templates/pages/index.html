@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - IdolPass{% endblock %}
+
+{% block css %}
+<style>
+    .hero-section {
+        background: url('https://source.unsplash.com/1600x900/?concert') no-repeat center center;
+        background-size: cover;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+    }
+    .hero-section h1 {
+        font-size: 4rem;
+        font-weight: bold;
+    }
+    .hero-section p {
+        font-size: 1.5rem;
+    }
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container" style="color: black;">
+        <h1>Bienvenido a IdolPass</h1>
+        <p>Tu portal para los mejores conciertos y eventos</p>
+        <a href="#concerts" class="btn btn-primary btn-lg">Ver Conciertos</a>
+    </div>
+</section>
+
+<section class="container my-5">
+    <h2 class="text-center mb-4" id= "concerts">Próximos Conciertos</h2>
+    <div class="row">
+        {% for concert in concerts %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ concert.image.url }}" class="card-img-top" alt="{{ concert.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ concert.name }}</h5>
+                    <p class="card-text">{{ concert.date }} - {{ concert.location }}</p>
+                    <a href="{% url 'concert_detail' concert.id %}" class="btn btn-primary">Ver Detalles</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="bg-light py-5 mb-5">
+    <div class="container">
+        <h2 class="text-center mb-4">¿Por qué elegir IdolPass?</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-music fa-3x mb-3"></i>
+                    <h5>Los Mejores Eventos</h5>
+                    <p>Accede a una selección exclusiva de los mejores conciertos y eventos en tu ciudad.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-ticket-alt fa-3x mb-3"></i>
+                    <h5>Entradas Seguras</h5>
+                    <p>Compra tus entradas de manera segura y rápida con nuestra plataforma confiable.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fas fa-users fa-3x mb-3"></i>
+                    <h5>Atención al Cliente</h5>
+                    <p>Estamos aquí para ayudarte con cualquier duda o problema que puedas tener.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br> </br>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+

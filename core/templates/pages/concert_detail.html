@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}{{ concert.name }} - IdolPass{% endblock %}
+
+{% block css %}
+<style>
+    .concert-detail {
+        padding: 50px 0;
+    }
+    .concert-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .concert-header img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    .concert-info {
+        margin-top: 20px;
+    }
+    .ticket-list {
+        margin-top: 30px;
+    }
+    .ticket-card {
+        transition: transform 0.2s;
+    }
+    .ticket-card:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="concert-detail mb-5">
+    <div class="container">
+        <div class="concert-header">
+            <h1>{{ concert.name }}</h1>
+            <p><strong>Fecha:</strong> {{ concert.date }}</p>
+            <p><strong>Ubicación:</strong> {{ concert.location }}</p>
+            <img src="{{ concert.image.url }}" alt="{{ concert.name }}" class="img-fluid">
+        </div>
+        <div class="concert-info">
+            <h3>Descripción</h3>
+            <p>{{ concert.description }}</p>
+        </div>
+        <div class="ticket-list">
+            <h3>Entradas Disponibles</h3>
+            {% if tickets %}
+            <div class="row">
+                {% for ticket in concert.tickets.all %}
+                    {% if not ticket.is_sold %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card ticket-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ ticket.type }}</h5>
+                                    <p class="card-text">Precio: ${{ ticket.price }}</p>
+                                    <p class="card-text"> Asiento: {{ ticket.seat_number }}</p>
+                                    {% if ticket in cart.tickets.all %}
+                                        <form method="POST" action="{% url 'remove_from_cart' ticket.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Eliminar del Carrito</button>
+                                        </form>
+                                    {% else %}
+                                        <form method="POST" action="{% url 'add_to_cart' ticket.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+                <p class="text-center text-danger">No hay entradas disponibles para este concierto.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

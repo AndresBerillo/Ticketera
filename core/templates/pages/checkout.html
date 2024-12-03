@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Proceder al Pago - IdolPass{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="text-center">
+        <h1 class="text-success mb-4">¡Compra realizada con éxito!</h1>
+        <p class="lead">Los siguientes tickets han sido comprados y están listos para ser descargados:</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if pdf_files %}
+                <ul class="list-group mb-4">
+                    {% for pdf in pdf_files %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Ticket PDF</span>
+                        <a href="{{ pdf }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-download"></i> Descargar
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="alert alert-warning text-center" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> No se encontraron archivos PDF para los tickets.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{% url 'home' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-arrow-left-circle"></i> Volver a la página de inicio
+        </a>
+    </div>
+</section>
+{% endblock %}
+

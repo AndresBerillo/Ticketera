@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - IdolPass{% endblock %}
+
+{% block content %}
+<section class="container py-5 mb-5" >
+    <h1 class="text-center text-primary mb-4">Bienvenido al Dashboard</h1>
+
+    <!-- Botones para Crear Conciertos, Usuarios y Tickets -->
+    <div class="d-flex justify-content-center gap-3 mb-5">
+        <a href="{% url 'concert_create' %}" class="btn btn-outline-primary btn-lg">
+            <i class="bi bi-music-note"></i> Crear Concierto
+        </a>
+        <a href="{% url 'user_create' %}" class="btn btn-outline-secondary btn-lg">
+            <i class="bi bi-person"></i> Crear Usuario
+        </a>
+        <a href="{% url 'ticket_create' %}" class="btn btn-outline-success btn-lg">
+            <i class="bi bi-ticket"></i> Crear Ticket
+        </a>
+    </div>
+
+    <!-- Gestión de Conciertos -->
+    <div class="mb-5">
+        <h2 class="text-secondary">Gestión de Conciertos</h2>
+        <table class="table table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>Nombre del Concierto</th>
+                    <th>Fecha</th>
+                    <th>Ubicación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for concert in concerts %}
+                <tr>
+                    <td>{{ concert.name }}</td>
+                    <td>{{ concert.date }}</td>
+                    <td>{{ concert.location }}</td>
+                    <td>
+                        <a href="{% url 'concert_edit' concert.id %}" class="btn btn-sm btn-warning">Editar</a>
+                        <form method="POST" action="{% url 'concert_delete' concert.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">No hay conciertos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Gestión de Usuarios -->
+    <div class="mb-5">
+        <h2 class="text-secondary">Gestión de Usuarios</h2>
+        <table class="table table-hover align-middle">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Nombre de Usuario</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <a href="{% url 'user_edit' user.id %}" class="btn btn-sm btn-warning">Editar</a>
+                        <form method="POST" action="{% url 'user_delete' user.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted">No hay usuarios registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Gestión de Tickets -->
+    <div>
+        <h2 class="text-secondary">Gestión de Tickets</h2>
+        <table class="table table-hover align-middle">
+            <thead class="table-success">
+                <tr>
+                    <th>Identificador del Ticket</th>
+                    <th>Concierto</th>
+                    <th>Asiento</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket }}</td>
+                    <td>{{ ticket.concert.name }}</td>
+                    <td>{{ ticket.seat_number }}</td>
+                    <td>${{ ticket.price }}</td>
+                    <td>
+                        <span class="badge {{ ticket.is_sold|yesno:'bg-danger,text-success' }}">
+                            {{ ticket.is_sold|yesno:"Vendido,Disponible" }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'ticket_edit' ticket.id %}" class="btn btn-sm btn-warning">Editar</a>
+                        <form method="POST" action="{% url 'ticket_delete' ticket.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No hay tickets registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
