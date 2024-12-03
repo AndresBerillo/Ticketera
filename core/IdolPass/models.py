@@ -24,14 +24,14 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"Seat {self.seat_number} - {self.concert.name}"
-    
+
     def save(self, *args, **kwargs):
-        if self.pdf_file:
+        if self.pdf_file and not self.pk:  # Solo renombrar al subir un archivo nuevo
             # Obtener la extensión del archivo
             ext = os.path.splitext(self.pdf_file.name)[1]
             # Crear el nuevo nombre del archivo
             new_filename = f"{self.concert.name}_{self.seat_number}{ext}".replace(" ", "_")
-            # Asignar el nuevo nombre al archivo
+            # Asignar el nuevo nombre sin el prefijo `tickets/`
             self.pdf_file.name = new_filename
         super(Ticket, self).save(*args, **kwargs)
 
