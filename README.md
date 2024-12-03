@@ -174,35 +174,43 @@ erDiagram
 
 ### Diccionario de Datos
 
-```markdown
 #### Tabla `USUARIO`
-- **id**: Integer - Identificador único del usuario.
-- **username**: String - Nombre de usuario.
-- **email**: String - Correo electrónico del usuario.
-- **password**: String - Contraseña del usuario.
+| Campo      | Tipo    | Descripción                         |
+|------------|---------|-------------------------------------|
+| `id`       | Integer | Identificador único del usuario.    |
+| `username` | String  | Nombre de usuario.                 |
+| `email`    | String  | Correo electrónico del usuario.     |
+| `password` | String  | Contraseña del usuario.             |
 
 #### Tabla `CONCIERTO`
-- **id**: Integer - Identificador único del concierto.
-- **nombre**: String - Nombre del concierto.
-- **fecha**: DateTime - Fecha y hora del concierto.
-- **ubicacion**: String - Lugar donde se llevará a cabo el concierto.
-- **descripcion**: String - Detalles adicionales sobre el concierto.
-- **imagen**: String - Ruta de la imagen del concierto.
+| Campo        | Tipo      | Descripción                                  |
+|--------------|-----------|----------------------------------------------|
+| `id`         | Integer   | Identificador único del concierto.           |
+| `nombre`     | String    | Nombre del concierto.                        |
+| `fecha`      | DateTime  | Fecha y hora del concierto.                  |
+| `ubicacion`  | String    | Lugar donde se llevará a cabo el concierto.  |
+| `descripcion`| String    | Detalles adicionales sobre el concierto.     |
+| `imagen`     | String    | Ruta de la imagen del concierto.             |
 
 #### Tabla `ENTRADA`
-- **id**: Integer - Identificador único de la entrada.
-- **concierto_id**: Integer - Referencia al concierto asociado.
-- **numero_asiento**: String - Número de asiento asignado.
-- **precio**: Decimal - Precio de la entrada.
-- **esta_vendida**: Boolean - Indica si la entrada ya fue vendida.
-- **archivo_pdf**: String - Ruta al archivo PDF de la entrada.
-- **propietario_id**: Integer - Referencia al usuario propietario.
+| Campo          | Tipo      | Descripción                                  |
+|----------------|-----------|----------------------------------------------|
+| `id`           | Integer   | Identificador único de la entrada.           |
+| `concierto_id` | Integer   | Referencia al concierto asociado.            |
+| `numero_asiento` | String  | Número de asiento asignado.                  |
+| `precio`       | Decimal   | Precio de la entrada.                        |
+| `esta_vendida` | Boolean   | Indica si la entrada ya fue vendida.         |
+| `archivo_pdf`  | String    | Ruta al archivo PDF de la entrada.           |
+| `propietario_id` | Integer | Referencia al usuario propietario.           |
 
 #### Tabla `CARRITO_DE_COMPRAS`
-- **id**: Integer - Identificador único del carrito.
-- **usuario_id**: Integer - Referencia al usuario propietario del carrito.
+| Campo       | Tipo    | Descripción                                    |
+|-------------|---------|------------------------------------------------|
+| `id`        | Integer | Identificador único del carrito.               |
+| `usuario_id`| Integer | Referencia al usuario propietario del carrito. |
 
 #### Tabla `CARRITO_ENTRADA`
-- **carrito_id**: Integer - Referencia al carrito de compras.
-- **entrada_id**: Integer - Referencia a la entrada asociada al carrito.
-
+| Campo        | Tipo    | Descripción                                    |
+|--------------|---------|------------------------------------------------|
+| `carrito_id` | Integer | Referencia al carrito de compras.              |
+| `entrada_id` | Integer | Referencia a la entrada asociada al carrito.   |
