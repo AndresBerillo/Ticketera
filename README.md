@@ -53,7 +53,7 @@ classDiagram
         +DateTime fecha
         +String ubicacion
         +String descripcion
-        +ImageField  imagen
+        +ImageField imagen
         +String __str__()
     }
 
@@ -70,18 +70,9 @@ classDiagram
     }
 
     class CarritoDeCompras {
-        +Int id
+        +int id
         +Usuario usuario
         +MuchosAMuchos entradas
-        +String __str__()
-    }
-
-    class Transaccion {
-        +int id
-        +Entrada entrada
-        +Usuario comprador
-        +DateTime fecha
-        +Decimal monto
         +String __str__()
     }
 
@@ -93,8 +84,7 @@ classDiagram
     Entrada "1" --> "1" Usuario : propietario
     CarritoDeCompras "1" --> "1" Usuario : usuario
     CarritoDeCompras "1" --> "*" Entrada : entradas
-    Transaccion "1" --> "1" Entrada : entrada
-    Transaccion "1" --> "1" Usuario : comprador
+
 ```
 
 ### Diagrama de Secuencia
@@ -129,8 +119,90 @@ sequenceDiagram
 
     Usuario->>Navegador: Procede a la compra
     Navegador->>ServidorDjango: Solicita procesar el pago (/checkout/)
-    ServidorDjango->>BaseDeDatos: Registra la transacción
-    BaseDeDatos-->>ServidorDjango: Confirma la transacción
+    ServidorDjango->>BaseDeDatos: Actualiza el estado de las entradas como vendidas
+    BaseDeDatos-->>ServidorDjango: Confirma la operación
     ServidorDjango-->>Navegador: Confirma la compra
     Navegador-->>Usuario: Muestra confirmación de la compra
+```
+
+### Diagrama Entidad-Relación
+
+```mermaid
+erDiagram
+    USUARIO {
+        Integer id
+        String username
+        String email
+        String password
+    }
+
+    CONCIERTO {
+        Integer id
+        String nombre
+        DateTime fecha
+        String ubicacion
+        String descripcion
+        String imagen
+    }
+
+    ENTRADA {
+        Integer id
+        Integer concierto_id
+        String numero_asiento
+        Decimal precio
+        Boolean esta_vendida
+        String archivo_pdf
+        Integer propietario_id
+    }
+
+    CARRITO_DE_COMPRAS {
+        Integer id
+        Integer usuario_id
+    }
+
+    CARRITO_ENTRADA {
+        Integer carrito_id
+        Integer entrada_id
+    }
+
+    USUARIO ||--o{ CARRITO_DE_COMPRAS : "posee"
+    CARRITO_DE_COMPRAS ||--o{ CARRITO_ENTRADA : "contiene"
+    ENTRADA ||--o{ CARRITO_ENTRADA : "es parte de"
+    USUARIO ||--o{ ENTRADA : "puede poseer"
+    CONCIERTO ||--o{ ENTRADA : "ofrece"
+```
+
+### Diccionario de Datos
+
+```markdown
+#### Tabla `USUARIO`
+- **id**: Integer - Identificador único del usuario.
+- **username**: String - Nombre de usuario.
+- **email**: String - Correo electrónico del usuario.
+- **password**: String - Contraseña del usuario.
+
+#### Tabla `CONCIERTO`
+- **id**: Integer - Identificador único del concierto.
+- **nombre**: String - Nombre del concierto.
+- **fecha**: DateTime - Fecha y hora del concierto.
+- **ubicacion**: String - Lugar donde se llevará a cabo el concierto.
+- **descripcion**: String - Detalles adicionales sobre el concierto.
+- **imagen**: String - Ruta de la imagen del concierto.
+
+#### Tabla `ENTRADA`
+- **id**: Integer - Identificador único de la entrada.
+- **concierto_id**: Integer - Referencia al concierto asociado.
+- **numero_asiento**: String - Número de asiento asignado.
+- **precio**: Decimal - Precio de la entrada.
+- **esta_vendida**: Boolean - Indica si la entrada ya fue vendida.
+- **archivo_pdf**: String - Ruta al archivo PDF de la entrada.
+- **propietario_id**: Integer - Referencia al usuario propietario.
+
+#### Tabla `CARRITO_DE_COMPRAS`
+- **id**: Integer - Identificador único del carrito.
+- **usuario_id**: Integer - Referencia al usuario propietario del carrito.
+
+#### Tabla `CARRITO_ENTRADA`
+- **carrito_id**: Integer - Referencia al carrito de compras.
+- **entrada_id**: Integer - Referencia a la entrada asociada al carrito.
 
